@@ -1,0 +1,81 @@
+name: Deploy Cloudflare Pages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      CLOUDFLARE_API_TOKEN: xxxxx
+      CLOUDFLARE_ACCOUNT_ID: xxxxx
+      CUSTOM_DOMAIN_SUFFIX: bibica.net
+      SERVER_PREFIX: iserver
+      SERVER_COUNT: 19
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install -g wrangler
+
+      - name: Generate page configurations
+        run: node scripts/generate-pages.js
+
+      - name: Deploy pages
+        run: |
+          echo "Cấu hình DNS CNAME records:"
+          echo ""
+
+          for i in $(seq 1 $SERVER_COUNT); do
+            PROJECT_NAME="${SERVER_PREFIX}${i}"
+            CUSTOM_DOMAIN="${PROJECT_NAME}.${CUSTOM_DOMAIN_SUFFIX}"
+
+            echo "Deploying $PROJECT_NAME..."
+            cd "${SERVER_PREFIX}/${PROJECT_NAME}"
+            
+            sleep 1
+            
+            if ! wrangler pages project list | grep -q "$PROJECT_NAME"; then
+              echo "Creating new project $PROJECT_NAME..."
+              wrangler pages project create "$PROJECT_NAME" --production-branch=main
+            fi
+            
+            sleep 1
+            
+            DEPLOYMENT_URL=$(wrangler pages deploy . --project-name="$PROJECT_NAME" --commit-dirty=true | grep -o 'https://[^[:space:]]*\.pages\.dev')
+            PROJECT_URL=$(echo $DEPLOYMENT_URL | sed 's/https:\/\/[^.]*\./https:\/\//')
+
+            DOMAIN_EXISTS=$(curl -s -X GET "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/pages/projects/${PROJECT_NAME}/domains" \
+              -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" | \
+              grep -o "$CUSTOM_DOMAIN" | head -1)
+            
+            sleep 1
+            
+            if [ -z "$DOMAIN_EXISTS" ]; then
+              echo "Adding custom domain $CUSTOM_DOMAIN..."
+              curl -X POST "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/pages/projects/${PROJECT_NAME}/domains" \
+                -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+                -H "Content-Type: application/json" \
+                --data '{"name":"'"$CUSTOM_DOMAIN"'"}' > /dev/null 2>&1
+            else
+              echo "Custom domain $CUSTOM_DOMAIN already exists, skipping..."
+            fi
+            
+            sleep 1
+            
+            PAGES_DOMAIN=$(echo $PROJECT_URL | sed 's/https:\/\///')
+            echo "CNAME $CUSTOM_DOMAIN -> $PAGES_DOMAIN"
+
+            cd ../..
+            sleep 1
+          done
+
+          echo ""
+          echo "Hoàn thành deploy tất cả pages!"

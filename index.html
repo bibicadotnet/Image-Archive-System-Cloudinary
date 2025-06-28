@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Archive System</title>
+   <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAABJVJREFUWEftl29sU2UUxn/v7W3Xda2l27q5jW0IC46MSgSG/FOn08EKJogOSfxsYjIHQmIMAiqgZiGEiMIXTPhmTAiBBAKbIhiywIBJJOCQYZll/4GtW9fub9t7zToZLZTdks0QE++nN/e85+nzPuec570VPOFHPOHf579DoKSs/HVZ6GaqQidQgqPCSTIProUQalAnbvz0w56T8agblwLOtyu2IIkd8QCO7VHUrScOffuFVk5cBErXrHMJmKEFFhlX4WbVwW/ytHLCBEpLK55SzaIYnWwlFBjN0em5t5Z08m6UkO1Rssd+H+hWVDZG4txfK17D0MDPR48e8InSt95/HklfLYRI02I7mXFVVTtURVomSssqzgkhFk0meLxYKupZUbp2w7BQQvrHkVdVgvinGOh/KjE8BYn+AJZeBTHOdKSl2nA48qn79Qq9vr7wBKlKICCca9ap8TIO6QSNBTaanp3CkEmOSjMMBMm+4WXG7x7kYDSkQS9zYN/n2KwWXI3NrN+0ayw3bgJ+i55LxZn0WRMweYfJcPuw9AyBCn1WAx25FnzJCST2DjP/dCsW7z/NDFjMJr7f/yU6nURPr59339scQWDtRnU8YxnZOZCUwLnSTIaNMrMuecj9o2vUQiOMSJVkWqclUr8wHZ0isfhYI6a+4NieoqXzWLJoHserz3D5asPY+7gUuFicSWdWEnNPt/F0Sx9JJiMrSl7EUZCHQFB//SbHfqzB7++nMz2RupKpJHf0s+Bkq6bXaxLoTjVSuyKHnIYeZp+/Q5o9mcpPPyA9LSWqBzq7eti0fS9tHXe5Nj8Vd0EyL1Q3k3J7YNwWE06NElwrtOMuSOXlQ3+S5A9SuW0DjvxpMUEbXLfYuHk3A2Yjv6zOJrvBi6PO89B9ETlxmgrULpvKYJLMK4fdZKSn8t2eLQjxaAcv/6gSd1M7Z1blIgcUlhxv1lBAYwxr3shFCiosqWpmzuyZfLW1fFzAbTv3c/FSPedLRokXHXFPrAQjCgwlGSk67CIrI439X98foVjIFR/vpLHpNjXOTIQKS6vaJlaC+kI7t2ZN4dWDjRgHQ+za8SGzZj4T81SN7lZGCAwbJE69M4Msl5fnau9MrAQeu5HzzhymX+ki/7cuMjPsVH5WQYrNGgXc4/Xxyfa93GrpwOWwcWOuncKTLdjb+idWgpHsC8ty8dj1LKxuweYJYjUbWbWiCMfsfIQSCvvAkaoauj3deG0GaldOx9LZx+KqZkSMr6bHmoKwE5pkzq7MQZEEc2raSW+Nfaq7GYlcfikDhGDR8SbMvvt2/CgZNMfwXqLPaqDutaxwZ6e095P5lw9zz3A47LcaaJ9moTPLhLEvyLzTrVi7R2Naj6YRRcoV0Eu45qTRnJdEMEEXdRfIAUH29S7yrnrQh6RxOz+6BGXrAgii71YN2ooE3mQjA2Y9qgCTL4DVM4ikaJ33gbhKUDjLKi4gxILHTJ2c7ap6USxfvb5QktVqIDnWd36kXJO89ijDg8vDpl78ZnlKgqxzqqjRwz0553wIRSC8Q8HQiVNH9nXF9b/gX+IRhv2fwN9nzxMm2j6krwAAAABJRU5ErkJggg==">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .limits-simple {
+            color: #666;
+            font-size: 0.85rem;
+            margin: 12px 0 25px 0;
+            text-align: center;
+            line-height: 1.4;
+        }
+        
+        .limits-simple strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .drop-zone {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: #007bff;
+        }
+
+        .drop-zone.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .drop-zone-text {
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .drop-zone-subtext {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .selected-files {
+            display: none;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .selected-files h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .file-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .file-item {
+            position: relative;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .file-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .file-item.error {
+            border-color: #dc3545;
+            background: #fff5f5;
+        }
+
+        .file-preview {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .file-info {
+            padding: 10px;
+        }
+
+        .file-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+            word-break: break-word;
+        }
+
+        .file-size {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .file-error {
+            font-size: 0.75rem;
+            color: #dc3545;
+            margin-top: 4px;
+        }
+
+        .remove-file {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 24px;
+            height: 24px;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: background 0.2s ease;
+        }
+
+        .remove-file:hover {
+            background: rgba(220, 53, 69, 1);
+        }
+
+        .upload-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #0056b3;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #545b62;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .progress-container {
+            display: none;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #007bff;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-details {
+            font-size: 0.8rem;	
+            color: #666;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 15px 0;
+            display: none;
+            position: relative;
+        }
+
+        .message.persistent {
+            padding-right: 40px;
+        }
+
+        .message-close {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.7;
+            color: inherit;
+        }
+
+        .message-close:hover {
+            opacity: 1;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            white-space: pre-line;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .warning-message {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        /* Ensure messages don't overlap when multiple are shown */
+        .message + .message {
+            margin-top: 10px;
+        }
+
+        .results-container {
+            display: none;
+            margin-top: 30px;
+        }
+        .results-container h3 {
+            margin-bottom: 10px;
+        }        
+
+        .image-result {
+            display: flex;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            background: white;
+         }
+        
+        .image-preview {
+            width: 144px;
+            height: 175px;
+            flex-shrink: 0;
+            margin: 8px;
+        }
+        
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .image-info {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .image-name {
+            display: none;
+        }
+        
+        .link-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .link-label {
+            width: 80px;
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .link-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .link-input:hover {
+            background: #e9ecef;
+        }
+        
+        .link-input.copied {
+            background: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .copy-feedback {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transform: translateX(100%);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        .copy-feedback.show {
+            transform: translateX(0);
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .file-counter {
+            background: #007bff;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            .file-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .image-result {
+                flex-direction: column;
+            }
+            
+            .image-preview {
+                width: 100%;
+                height: 200px;
+            }
+            
+            .link-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 5px;
+            }
+            
+            .link-label {
+                width: auto;
+            }
+
+            .upload-actions {
+                flex-direction: column;
+            }
+
+            .results-container > div:first-child {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .results-container > div:first-child > div {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            #copyAllFormat, #copyAllBtn, #clearResultsBtn {
+                width: 100%;
+            }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Image Archive System</h1>
+            <p class="subtitle">Upload your images and get shareable links</p>
+            <p class="limits-simple" id="limitsText"></p>
+        </div>
+        
+        <div class="drop-zone" id="dropZone">
+            <div class="drop-zone-text">Drop images here or click to browse</div>
+            <div class="drop-zone-subtext">Select multiple images to review before uploading</div>
+            <input type="file" id="fileInput" name="fileInput" class="file-input" accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.webp" multiple>
+        </div>
+
+        <div class="selected-files" id="selectedFiles">
+            <h3>Selected Files <span class="file-counter" id="fileCounter">0</span></h3>
+            <div class="file-list" id="fileList"></div>
+            <div class="upload-actions">
+                <button class="btn btn-primary" id="uploadBtn" disabled>
+                    <span id="uploadBtnText">Upload Images</span>
+                    <span class="loading-spinner" id="uploadSpinner" style="display: none;"></span>
+                </button>
+                <button class="btn btn-secondary" id="clearBtn">Clear Selected Files</button>
+            </div>
+        </div>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-info">
+                <span id="progressText">Uploading...</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-details" id="progressDetails"></div>
+        </div>
+
+        <div class="message error-message" id="errorMessage">
+            <span class="message-content"></span>
+            <button class="message-close" onclick="this.parentElement.style.display='none'">&times;</button>
+        </div>
+        <div class="message success-message" id="successMessage">
+            <span class="message-content"></span>
+            <button class="message-close" onclick="this.parentElement.style.display='none'">&times;</button>
+        </div>
+        <div class="message warning-message" id="warningMessage">
+            <span class="message-content"></span>
+            <button class="message-close" onclick="this.parentElement.style.display='none'">&times;</button>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3>Upload Results <span class="file-counter" id="resultsCounter"></span></h3>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <select id="copyAllFormat" name="copyAllFormat" style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; background: white; cursor: pointer;">
+                        <option value="direct">Direct Links</option>
+                        <option value="markdown">Markdown</option>
+                        <option value="bbcode">BBCode</option>
+                        <option value="html">HTML</option>
+                    </select>
+                    <button class="btn btn-primary" id="copyAllBtn" style="padding: 8px 16px; font-size: 0.9rem;">Copy All</button>
+                    <button class="btn btn-secondary" id="clearResultsBtn" style="padding: 8px 16px; font-size: 0.9rem;">Clear Results</button>
+                </div>
+            </div>
+            <div id="imageResults"></div>
+        </div>
+        
+    </div>
+
+    <div class="copy-feedback" id="copyFeedback">Copied to clipboard!</div>
+
+    <script>
+        class ImageUploader {
+		constructor() {
+		    // Cache DOM elements
+		    this.cacheElements();
+		    this.initEventListeners();
+		    this.selectedFiles = [];
+		    this.uploadedFiles = [];
+		    this.isUploading = false;
+		    this.exceededMemory = false;
+		    this.pendingUIUpdates = false;
+		    this.pendingResults = new Map();
+		    this.originalFileOrder = [];
+		
+		    this.uploadedBytes = 0;
+		    this.totalBytes = 0;
+		    this.progressInterval = null;
+		    this.completedFiles = 0;
+		    this.sentFiles = 0;
+		    
+		    // Dùng giá trị trực tiếp thay vì config
+		    this.maxFiles = 20;
+		    this.maxFileSize = 10 * 1024 * 1024;
+		    this.allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/tiff', 'image/webp'];
+		    this.maxBatchSize = 40 * 1024 * 1024;
+		    this.timeWindowMinutes = 5;
+		    this.servers = Array.from({length: 19}, (_, i) => `https://iserver${i+1}.bibica.net`);
+		    this.ready = true;
+		    
+		    this.updateLimitsUI();
+		    this.initButtonEvents();
+		}
+
+            initButtonEvents() {
+                // Delay to ensure DOM is ready
+                setTimeout(() => {
+                    const clearBtn = document.getElementById('clearResultsBtn');
+                    const copyBtn = document.getElementById('copyAllBtn');
+                    
+                    if (clearBtn) {
+                        clearBtn.addEventListener('click', () => this.clearResults());
+                    }
+                    if (copyBtn) {
+                        copyBtn.addEventListener('click', () => this.copyAllLinks());
+                    }
+                }, 100);
+            }
+            
+            updateLimitsUI() {
+                const limitsElement = document.getElementById('limitsText');
+                if (!limitsElement) return;
+                
+                const maxSizeMB = Math.floor(this.maxFileSize / (1024 * 1024));
+                const maxBatchSizeMB = Math.floor(this.maxBatchSize / (1024 * 1024));
+
+                const formatMap = {
+                    'image/jpeg': 'JPEG',
+                    'image/png': 'PNG', 
+                    'image/gif': 'GIF',
+                    'image/bmp': 'BMP',
+                    'image/tiff': 'TIFF',
+                    'image/webp': 'WEBP'
+                };
+                
+                const supportedFormats = this.allowedTypes
+                    .map(type => formatMap[type] || type.split('/').pop().toUpperCase())
+                    .filter((value, index, self) => self.indexOf(value) === index)
+                    .join(', ');
+                
+		limitsElement.innerHTML = `
+		    Maximum <strong>${this.maxFiles} images per ${this.timeWindowMinutes} minutes per IP</strong> • 
+		    Each image up to <strong>${maxSizeMB}MB</strong> • 
+		    Supported formats: <strong>${supportedFormats}</strong>
+		`;
+            }
+            
+            showConfigError() {
+                const limitsElement = document.getElementById('limitsText');
+                if (limitsElement) {
+                    limitsElement.innerHTML = '<span style="color: #ef4444;">Failed to load configuration. Using default limits.</span>';
+                }
+            }
+
+            // Cache DOM elements for better performance
+            cacheElements() {
+                this.dropZone = document.getElementById('dropZone');
+                this.fileInput = document.getElementById('fileInput');
+                this.selectedFilesContainer = document.getElementById('selectedFiles');
+                this.fileList = document.getElementById('fileList');
+                this.fileCounter = document.getElementById('fileCounter');
+                this.uploadBtn = document.getElementById('uploadBtn');
+                this.clearBtn = document.getElementById('clearBtn');
+                this.uploadBtnText = document.getElementById('uploadBtnText');
+                this.uploadSpinner = document.getElementById('uploadSpinner');
+                this.progressContainer = document.getElementById('progressContainer');
+                this.progressFill = document.getElementById('progressFill');
+                this.progressText = document.getElementById('progressText');
+                this.progressPercent = document.getElementById('progressPercent');
+                this.progressDetails = document.getElementById('progressDetails');
+                this.errorMessage = document.getElementById('errorMessage');
+                this.successMessage = document.getElementById('successMessage');
+                this.warningMessage = document.getElementById('warningMessage');
+                this.resultsContainer = document.getElementById('resultsContainer');
+                this.imageResults = document.getElementById('imageResults');
+                this.copyFeedback = document.getElementById('copyFeedback');
+                this.clearResultsBtn = document.getElementById('clearResultsBtn');
+                this.resultsCounter = document.getElementById('resultsCounter');
+            }
+
+            // Debounce function for validation
+            debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            // Batch DOM updates using requestAnimationFrame
+            batchUpdate(callback) {
+                if (!this.pendingUIUpdates) {
+                    this.pendingUIUpdates = true;
+                    requestAnimationFrame(() => {
+                        callback();
+                        this.pendingUIUpdates = false;
+                    });
+                }
+            }
+
+            // Debounced file validation
+            validateFiles = this.debounce((files) => {
+                const newFiles = Array.from(files).map(file => {
+                    const error = this.validateFile(file);
+                    return { file, error };
+                });
+
+                this.batchUpdate(() => {
+                    this.selectedFiles = [...this.selectedFiles, ...newFiles];
+                    this.updateFileList();
+                    this.updateUI();
+                });
+            }, 250);
+
+            handleFileSelect(event) {
+                const files = event.target.files;
+                if (files.length > 0) {
+                    this.addFiles(Array.from(files));
+                }
+                this.fileInput.value = '';
+            }
+
+            handleDrop(event) {
+                event.preventDefault();
+                this.dropZone.classList.remove('dragover');
+                
+                const files = event.dataTransfer.files;
+                if (files.length > 0) {
+                    this.addFiles(Array.from(files));
+                }
+            }
+
+            addFiles(files) {
+                if (this.isUploading) return;
+                // Clear previous success and error messages
+                this.hideMessages();
+                // Only hide warning messages, keep error/success messages visible
+                this.hideSpecificMessage('warning');
+                
+                const totalFiles = this.selectedFiles.length + files.length;
+                if (totalFiles > this.maxFiles) {
+                    this.showWarning(`You can only upload ${this.maxFiles} images at a time (${totalFiles - this.maxFiles} files will be ignored)`);
+                    files = files.slice(0, this.maxFiles - this.selectedFiles.length);
+                }
+
+                const newFiles = files.map(file => {
+                    // Check if file already exists
+                    const exists = this.selectedFiles.some(f => 
+                        f.name === file.name && f.size === file.size && f.lastModified === file.lastModified
+                    );
+                    
+                    if (exists) {
+                        this.showWarning(`File "${file.name}" is already selected`);
+                        return null;
+                    }
+
+                    const error = this.validateFile(file);
+                    return { 
+                        file,
+                        error,
+                        id: crypto.randomUUID(),
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        preview: null
+                    };
+                }).filter(Boolean);
+
+                this.selectedFiles = [...this.selectedFiles, ...newFiles];
+                this.updateFileList();
+                this.updateUI();
+
+                // Generate previews
+                newFiles.forEach(fileData => {
+                    if (!fileData.error && fileData.type.startsWith('image/')) {
+                        this.generatePreview(fileData);
+                    }
+                });
+            }
+
+            updateFileList() {
+                this.fileList.innerHTML = '';
+                
+                this.selectedFiles.forEach(fileData => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = `file-item ${fileData.error ? 'error' : ''}`;
+                    fileItem.dataset.fileId = fileData.id;
+
+                    const preview = fileData.preview || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDIwMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTIwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xMDAgNzVMODUgNTVINzBWODVIMTMwVjU1TDExNSA3NUgxMDBaIiBmaWxsPSIjREREIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTk5IiBmb250LXNpemU9IjEwIj5JbWFnZTwvdGV4dD4KPC9zdmc+';
+
+                    fileItem.innerHTML = `
+                        <img src="${preview}" alt="Preview" class="file-preview" onerror="this.src='${preview}'">
+                        <div class="file-info">
+                            <div class="file-name">${fileData.name}</div>
+                            <div class="file-size">${this.formatFileSize(fileData.size)}</div>
+                            ${fileData.error ? `<div class="file-error">${fileData.error}</div>` : ''}
+                        </div>
+                        <button class="remove-file" onclick="uploader.removeFile('${fileData.id}')" title="Remove file">×</button>
+                    `;
+                    this.fileList.appendChild(fileItem);
+                });
+
+                this.selectedFilesContainer.style.display = this.selectedFiles.length > 0 ? 'block' : 'none';
+                this.fileCounter.textContent = this.selectedFiles.length;
+            }
+
+            updateUI() {
+                this.batchUpdate(() => {
+                    const validFiles = this.selectedFiles.filter(f => !f.error);
+                    this.uploadBtn.disabled = !validFiles.length || this.isUploading;
+                    this.dropZone.classList.toggle('disabled', this.isUploading);
+                    this.uploadBtnText.textContent = 'Upload Images';
+                });
+            }
+
+            initEventListeners() {
+                this.dropZone.addEventListener('click', () => {
+                    if (!this.isUploading) this.fileInput.click();
+                });
+                this.dropZone.addEventListener('dragover', (e) => this.handleDragOver(e));
+                this.dropZone.addEventListener('drop', (e) => this.handleDrop(e));
+                this.dropZone.addEventListener('dragleave', (e) => this.handleDragLeave(e));
+                this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
+                this.uploadBtn.addEventListener('click', () => this.startUpload());
+                this.clearBtn.addEventListener('click', () => this.clearFiles());
+            }
+
+            handleDragOver(e) {
+                e.preventDefault();
+                if (!this.isUploading) {
+                    this.dropZone.classList.add('dragover');
+                }
+            }
+
+            handleDragLeave(e) {
+                e.preventDefault();
+                this.dropZone.classList.remove('dragover');
+            }
+
+            validateFile(file) {
+                if (!this.allowedTypes.includes(file.type)) {
+                    // Extract file extension from name
+                    const fileExtension = file.name.split('.').pop().toLowerCase();
+                    return `Unsupported file type: ${file.type || `'${fileExtension}' file`}`;
+                }
+
+                if (file.size > this.maxFileSize) {
+                    return `Too large (${this.formatFileSize(file.size)}). Max ${this.formatFileSize(this.maxFileSize)}`;
+                }
+
+                return null;
+            }
+
+            generatePreview(fileData) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    fileData.preview = e.target.result;
+                    this.updateFileItem(fileData);
+                };
+                reader.readAsDataURL(fileData.file);
+            }
+
+            updateFileItem(fileData) {
+                const fileItem = this.fileList.querySelector(`[data-file-id="${fileData.id}"]`);
+                if (fileItem) {
+                    const preview = fileData.preview || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDIwMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTIwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xMDAgNzVMODUgNTVINzBWODVIMTMwVjU1TDExNSA3NUgxMDBaIiBmaWxsPSIjREREIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTk5IiBmb250LXNpemU9IjEwIj5JbWFnZTwvdGV4dD4KPC9zdmc+';
+                    fileItem.querySelector('.file-preview').src = preview;
+                }
+            }
+
+            removeFile(fileId) {
+                // Find index of file to remove
+                const index = this.selectedFiles.findIndex(f => f.id === fileId);
+                if (index === -1) return;
+
+                // Remove file from array
+                this.selectedFiles.splice(index, 1);
+
+                // Remove element from DOM directly
+                const fileItem = this.fileList.querySelector(`[data-file-id="${fileId}"]`);
+                if (fileItem) {
+                    fileItem.remove();
+                }
+
+                // Update UI
+                this.fileCounter.textContent = this.selectedFiles.length;
+                this.selectedFilesContainer.style.display = this.selectedFiles.length > 0 ? 'block' : 'none';
+                this.updateUI();
+            }
+
+            clearFiles() {
+                this.selectedFiles = [];
+                this.updateFileList();
+                this.updateUI();
+                // Only hide warning messages, keep error/success messages visible
+                this.hideSpecificMessage('warning');
+            }
+
+            // 1. Thêm function chọn server ngẫu nhiên
+            getRandomServer() {
+                const servers = this.sessionServers || this.servers;
+                const randomIndex = Math.floor(Math.random() * servers.length);
+                return servers[randomIndex];
+            }
+
+            // 2. Sửa method startUpload - phần xử lý batches
+            async startUpload() {
+                const validFiles = this.selectedFiles.filter(f => !f.error);
+                if (validFiles.length === 0) return;
+
+                // Clear all previous success and error messages
+                this.hideMessages();
+
+                // Chọn ngẫu nhiên 3 server dùng cho phiên upload này
+                this.sessionServers = this.servers
+                    .slice()
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 3);
+                
+                this.isUploading = true;
+                this.exceededMemory = false;
+                this.uploadedBytes = 0;
+                this.completedFiles = 0; // Reset số file hoàn thành
+                this.sentFiles = 0; // Reset số file đã gửi xong
+                this.updateUI();
+                this.hideSpecificMessage('warning');
+                
+                this.originalFileOrder = validFiles.map((f, index) => ({ id: f.id, index }));
+                this.pendingResults.clear();
+                
+                this.uploadSpinner.style.display = 'inline-block';
+                this.uploadBtnText.textContent = 'Uploading...';
+                
+                this.progressContainer.style.display = 'block';
+                this.uploadedFiles = [];
+                
+                this.selectedFilesContainer.style.display = 'none';
+                // Don't hide the results container, so previous results remain visible
+                // this.resultsContainer.style.display = 'none';
+                
+                let totalUploaded = 0;
+                let totalFailed = 0;
+                let errorMessages = [];
+                
+                try {
+                    const batches = await this.createBatches(validFiles);
+                    
+                    // Tính tổng dung lượng
+                    this.totalBytes = batches.reduce((sum, batch) => sum + batch.totalSize, 0);
+                    
+                    // Bắt đầu interval theo dõi tiến trình
+                    this.startProgressTracking(validFiles.length);
+                    
+                    // Sử dụng pipeline upload
+                    const batchResults = await this.uploadBatchesPipelineCorrect(batches);
+                    
+                    // Dừng interval
+                    this.stopProgressTracking();
+                    
+                    // Xử lý kết quả
+                    for (const results of batchResults) {
+                        for (const result of results) {
+                            if (result.success) {
+                                result.result.original_name = result.fileData.name;
+                                this.uploadedFiles.push(result.result);
+                                totalUploaded++;
+                                this.pendingResults.set(result.fileData.id, result.result);
+                                this.removeFileFromSelectedQuiet(result.fileData.id);
+                            } else {
+                                totalFailed++;
+                                if (result.error && result.error.status === 503) {
+                                    this.exceededMemory = true;
+                                }
+                                const errorDetail = result.error?.details || result.error?.message || 'Upload failed';
+                                errorMessages.push(`${result.fileData.name}: ${errorDetail}`);
+                            }
+                        }
+                    }
+                    
+                    const orderedResults = this.getOrderedResults();
+                    this.batchAddResults(orderedResults);
+                    this.finishUpload(totalUploaded, totalFailed, errorMessages);
+                    
+                } catch (error) {
+                    this.stopProgressTracking();
+                    console.error('Upload failed:', error);
+                    this.showError('Upload failed: ' + error.message);
+                    this.isUploading = false;
+                    this.updateUI();
+                    this.uploadSpinner.style.display = 'none';
+                    this.progressContainer.style.display = 'none';
+                    this.selectedFilesContainer.style.display = this.selectedFiles.length > 0 ? 'block' : 'none';
+                }
+            }
+
+            // 3.Pipeline upload đơn giản - xử lý kết quả song song
+            async uploadBatchesPipelineCorrect(batches, onResult = null) {
+                if (batches.length === 1) {
+                    const batchUploads = this.prepareBatchUploads(batches[0]);
+                    batchUploads.forEach(upload => upload.send());
+                    const results = await Promise.all(batchUploads.map(upload => upload.resultPromise));
+                    return [results];
+                }
+                
+                const allBatchUploads = batches.map(batch => this.prepareBatchUploads(batch));
+                
+                // Xử lý kết quả song song nếu có callback
+                if (onResult) {
+                    allBatchUploads.forEach((batchUploads, batchIndex) => {
+                        batchUploads.forEach((upload, fileIndex) => {
+                            upload.resultPromise.then(result => onResult(batchIndex, fileIndex, result));
+                        });
+                    });
+                }
+                
+                for (let i = 0; i < allBatchUploads.length; i++) {
+                    const batchUploads = allBatchUploads[i];
+                    batchUploads.forEach(upload => upload.send());
+                    await Promise.all(batchUploads.map(upload => upload.sentPromise));
+                }
+                
+                const allResults = await Promise.all(
+                    allBatchUploads.map(batchUploads => 
+                        Promise.all(batchUploads.map(upload => upload.resultPromise))
+                    )
+                );
+                
+                return allResults;
+            }
+
+            // 4. Chuẩn bị uploads cho 1 batch
+            prepareBatchUploads(batch) {
+                return batch.files.map(fileData => this.createUploadObject(fileData));
+            }
+
+            // 5. Tạo upload object
+            createUploadObject(fileData) {
+                const xhr = new XMLHttpRequest();
+                const formData = new FormData();
+                formData.append('file', fileData.file);
+                
+                let sentResolve = null;
+                let resultResolve = null;
+                
+                // Promise cho việc gửi xong dữ liệu
+                const sentPromise = new Promise(resolve => {
+                    sentResolve = resolve;
+                });
+                
+                // Promise cho việc nhận response
+                const resultPromise = new Promise(resolve => {
+                    resultResolve = resolve;
+                });
+                
+                // Setup upload progress tracking
+                xhr.upload.onprogress = (event) => {
+                    if (event.lengthComputable) {
+                        const previousLoaded = xhr._previousLoaded || 0;
+                        this.uploadedBytes += (event.loaded - previousLoaded);
+                        xhr._previousLoaded = event.loaded;
+                        
+                        // Nếu đã gửi hết dữ liệu (100%)
+                        if (event.loaded === event.total && sentResolve) {
+                            this.sentFiles++;
+                            sentResolve();
+                            sentResolve = null; // Chỉ resolve 1 lần
+                        }
+                    }
+                };
+                
+                // Setup response handlers
+                xhr.onload = () => {
+                    try {
+                        // Xử lý HTTP error status trước khi parse JSON
+                        if (xhr.status >= 400) {
+                            const error = new Error(`HTTP ${xhr.status}`);
+                            error.status = xhr.status;
+                            
+                            // Với 502 Bad Gateway, response thường rỗng
+                            if (xhr.status === 502) {
+                                error.details = 'Server temporarily unavailable';
+                            } else {
+                                // Thử parse JSON để lấy error message nếu có
+                                try {
+                                    if (xhr.responseText) {
+                                        const result = JSON.parse(xhr.responseText);
+                                        error.details = result?.error || result?.message || `HTTP ${xhr.status}`;
+                                    } else {
+                                        error.details = `HTTP ${xhr.status} - No response`;
+                                    }
+                                } catch (e) {
+                                    error.details = `HTTP ${xhr.status} - Invalid response`;
+                                }
+                            }
+                            
+                            this.completedFiles++;
+                            return resultResolve({ success: false, error, fileData });
+                        }
+                        
+                        // Chỉ parse JSON khi response thành công
+                        let result;
+                        if (xhr.responseText) {
+                            try {
+                                result = JSON.parse(xhr.responseText);
+                            } catch (e) {
+                                const error = new Error('Invalid JSON response');
+                                error.details = 'Server returned invalid JSON';
+                                this.completedFiles++;
+                                return resultResolve({ success: false, error, fileData });
+                            }
+                        } else {
+                            const error = new Error('Empty response');
+                            error.details = 'Server returned empty response';
+                            this.completedFiles++;
+                            return resultResolve({ success: false, error, fileData });
+                        }
+                        
+                        // Success case
+                        this.completedFiles++;
+                        resultResolve({ success: true, result, fileData });
+                        
+                    } catch (error) {
+                        error.details = error.message || 'Upload failed';
+                        this.completedFiles++;
+                        resultResolve({ success: false, error, fileData });
+                    }
+                };
+                
+                xhr.onerror = () => {
+                    const error = new Error('Network error');
+                    error.details = 'Network error occurred during upload';
+                    this.completedFiles++;
+                    resultResolve({ success: false, error, fileData });
+                };
+                
+                xhr.ontimeout = () => {
+                    const error = new Error('Upload timeout');
+                    error.details = 'Upload request timed out';
+                    this.completedFiles++;
+                    resultResolve({ success: false, error, fileData });
+                };
+                
+                const uploadUrl = this.getRandomServer();
+                    xhr.open('POST', uploadUrl);
+
+                
+                // Return object với method send() và các promises
+                return {
+                    fileData,
+                    sentPromise,
+                    resultPromise,
+                    send: () => {
+                        xhr.send(formData);
+                    }
+                };
+            }
+
+            // 6. Theo dõi tiến trình 
+            startProgressTracking(totalFiles) {
+                const totalSize = this.formatFileSize(this.totalBytes);
+                this.progressText.textContent = `Uploading ${totalFiles} files, ${totalSize}`;
+                this.progressDetails.textContent = `0B / ${totalSize} (0/${totalFiles} files)`;
+                
+                this.progressInterval = setInterval(() => {
+                    if (this.totalBytes > 0) {
+                        const percent = Math.min(((this.uploadedBytes / this.totalBytes) * 100), 99);
+                        this.updateProgress(percent);
+                        
+                        const uploadedSize = this.formatFileSize(this.uploadedBytes);
+                        this.progressDetails.textContent = `${uploadedSize} / ${totalSize} (${this.completedFiles}/${totalFiles} files)`;
+                    }
+                }, 500);
+            }
+
+            // 7. Dừng theo dõi tiến trình
+            stopProgressTracking() {
+                if (this.progressInterval) {
+                    clearInterval(this.progressInterval);
+                    this.progressInterval = null;
+                    this.updateProgress(100);
+                }
+            }
+
+            // 8. Format file size
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 B';
+                
+                const k = 1024;
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                
+                if (bytes < k) {
+                    return bytes + ' B';
+                } else if (bytes < k * k) {
+                    return (bytes / k).toFixed(2) + ' KB';
+                } else if (bytes < k * k * k) {
+                    return (bytes / (k * k)).toFixed(2) + ' MB';
+                } else {
+                    return (bytes / (k * k * k)).toFixed(2) + ' GB';
+                }
+            }
+            
+            // **THÊM: Method để sắp xếp kết quả theo thứ tự ban đầu**
+            getOrderedResults() {
+                const orderedResults = [];
+                
+                // Sắp xếp theo thứ tự ban đầu
+                this.originalFileOrder.forEach(({ id }) => {
+                    if (this.pendingResults.has(id)) {
+                        orderedResults.push(this.pendingResults.get(id));
+                    }
+                });
+                
+                return orderedResults;
+            }
+
+            // Remove file from selected array without updating UI
+            removeFileFromSelectedQuiet(fileId) {
+                this.selectedFiles = this.selectedFiles.filter(f => f.id !== fileId);
+                // Don't call updateFileList() or updateUI() here
+            }
+
+            // Batch add all results at once to minimize DOM manipulation
+            batchAddResults(results) {
+                if (results.length === 0) return;
+                
+                const startTime = performance.now();
+                
+                const baseUrl = window.location.origin;
+                const fragment = document.createDocumentFragment();
+                
+                // **SỬA: Kết quả đã được sắp xếp theo thứ tự ban đầu**
+                results.forEach(result => {
+                    const directUrl = `${baseUrl}/${result.folder ? result.folder + '/' : ''}${result.filename}`;
+                    const generatedFileName = result.filename.replace(/\.[^/.]+$/, "");
+                    
+                    const imageResult = document.createElement('div');
+                    imageResult.className = 'image-result';
+                    
+                    imageResult.innerHTML = `
+                        <div class="image-preview">
+                            <img src="${directUrl}" alt="Preview" loading="lazy" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik02MCA3NUw0NSA1NUgzMFY4NUg5MFY1NUw3NSA3NUg2MFoiIGZpbGw9IiNEREQiLz4KPC9zdmc+Cg=='">
+                        </div>
+                        <div class="image-info">
+                            <div class="image-name">${result.original_name}</div>
+                            <div class="link-row">
+                                <div class="link-label">Direct:</div>
+                                <input type="text" class="link-input" name="direct-link-${generatedFileName}" value="${directUrl}" readonly onclick="uploader.copyToClipboard(this)">
+                            </div>
+                            <div class="link-row">
+                                <div class="link-label">Markdown:</div>
+                                <input type="text" class="link-input" name="markdown-link-${generatedFileName}" value="![${generatedFileName}](${directUrl})" readonly onclick="uploader.copyToClipboard(this)">
+                            </div>
+                            <div class="link-row">
+                                <div class="link-label">BBCode:</div>
+                                <input type="text" class="link-input" name="bbcode-link-${generatedFileName}" value="[img]${directUrl}[/img]" readonly onclick="uploader.copyToClipboard(this)">
+                            </div>
+                            <div class="link-row">
+                                <div class="link-label">HTML:</div>
+                                <input type="text" class="link-input" name="html-link-${generatedFileName}" value="<img src=&quot;${directUrl}&quot; alt=&quot;${generatedFileName}&quot;>" readonly onclick="uploader.copyToClipboard(this)">
+                            </div>
+                        </div>
+                    `;
+                    
+                    fragment.appendChild(imageResult);
+                });
+                
+                this.imageResults.appendChild(fragment);
+                this.resultsContainer.style.display = 'block';
+                this.resultsCounter.textContent = this.imageResults.children.length;
+                
+                const endTime = performance.now();
+            }
+
+            clearResults() {
+                this.imageResults.innerHTML = '';
+                this.resultsContainer.style.display = 'none';
+                this.uploadedFiles = [];
+                this.resultsCounter.textContent = '';
+                this.pendingResults.clear(); // Xóa pending results
+                this.originalFileOrder = []; // Xóa thứ tự ban đầu
+            }            
+            
+            createBatches(files) {
+                const batches = [];
+                
+                if (!files || files.length === 0) return batches;
+                
+                // Sort files by size in descending order (largest first)
+                const sortedFiles = [...files].sort((a, b) => b.file.size - a.file.size);
+                
+                // Use greedy bin packing algorithm
+                for (const fileData of sortedFiles) {
+                    let placed = false;
+                    
+                    // Try to place file in existing batch
+                    for (const batch of batches) {
+                        if (batch.totalSize + fileData.file.size <= this.maxBatchSize) {
+                            batch.files.push(fileData);
+                            batch.totalSize += fileData.file.size;
+                            placed = true;
+                            break;
+                        }
+                    }
+                    
+                    // If can't place in any existing batch, create new batch
+                    if (!placed) {
+                        batches.push({
+                            files: [fileData],
+                            totalSize: fileData.file.size
+                        });
+                    }
+                }
+                
+                return batches;
+            }
+            
+            hideMessages() {
+                this.errorMessage.style.display = 'none';
+                this.successMessage.style.display = 'none';
+                this.warningMessage.style.display = 'none';
+                this.errorMessage.classList.remove('persistent');
+                this.successMessage.classList.remove('persistent');
+            }
+
+            hideSpecificMessage(type) {
+                switch(type) {
+                    case 'error':
+                        this.errorMessage.style.display = 'none';
+                        this.errorMessage.classList.remove('persistent');
+                        break;
+                    case 'success':
+                        this.successMessage.style.display = 'none';
+                        this.successMessage.classList.remove('persistent');
+                        break;
+                    case 'warning':
+                        this.warningMessage.style.display = 'none';
+                        break;
+                }
+            }
+
+            removeFileFromSelected(fileId) {
+                this.selectedFiles = this.selectedFiles.filter(f => f.id != fileId);
+                this.updateFileList();
+                this.updateUI();
+            }
+            
+            clearResults() {
+                this.imageResults.innerHTML = '';
+                this.resultsContainer.style.display = 'none';
+                this.uploadedFiles = [];
+                this.resultsCounter.textContent = '';
+            }
+
+            updateProgress(percent) {
+                this.progressFill.style.width = `${percent}%`;
+                this.progressPercent.textContent = `${Math.round(percent)}%`;
+            }
+
+            // Modified finishUpload to handle batch UI updates
+            finishUpload(uploadedCount, failedCount, errorMessages) {
+                // Clear previews to free memory
+                this.selectedFiles.forEach(f => f.preview = null);
+                
+                this.isUploading = false;
+                this.progressContainer.style.display = 'none';
+                this.uploadSpinner.style.display = 'none';
+                
+                // Show containers again - only once at the end
+                this.selectedFilesContainer.style.display = this.selectedFiles.length > 0 ? 'block' : 'none';
+                
+                // Always show results container if there are any uploaded files (current or previous)
+                this.resultsContainer.style.display = (this.uploadedFiles.length > 0 || this.imageResults.children.length > 0) ? 'block' : 'none';
+                
+                // Update file list only once if there are remaining files
+                if (this.selectedFiles.length > 0) {
+                    this.updateFileList();
+                }
+                
+                this.updateUI();
+                
+                if (this.exceededMemory) {
+                    this.showError('Upload failed: Cloudflare worker exceeded memory limit (503). Please reduce the number of files and try again.');
+                    return;
+                }
+                
+                // Show appropriate messages based on results
+                if (uploadedCount > 0 && failedCount > 0) {
+                    // Both successes and failures - show both messages
+                    this.showSuccess(`Successfully uploaded ${uploadedCount} file${uploadedCount > 1 ? 's' : ''}`);
+                    
+                    // Show specific error messages if available, otherwise generic message
+                    if (errorMessages && errorMessages.length > 0) {
+                        const errorText = errorMessages.length === 1 
+                            ? errorMessages[0] 
+                            : `${failedCount} files failed to upload:\n${errorMessages.join('\n')}`;
+                        this.showError(errorText);
+                    } else {
+                        this.showError(`${failedCount} file${failedCount > 1 ? 's' : ''} failed to upload due to file size exceeding the limit (10MB per file). Please check and reduce file sizes.`);
+                    }
+                } else if (uploadedCount > 0) {
+                    // Only successes
+                    this.showSuccess(`Successfully uploaded ${uploadedCount} file${uploadedCount > 1 ? 's' : ''}`);
+                } else if (failedCount > 0) {
+                    // Only failures
+                    if (errorMessages && errorMessages.length > 0) {
+                        const errorText = errorMessages.length === 1 
+                            ? errorMessages[0] 
+                            : `All uploads failed:\n${errorMessages.join('\n')}`;
+                        this.showError(errorText);
+                    } else {
+                        this.showError('All uploads failed. You may have exceeded the upload limit. Please wait a moment and try again.');
+                    }
+                }
+                
+                if (uploadedCount > 0) {
+                    this.displayResults();
+                }
+            }
+
+            displayResults() {
+                this.resultsContainer.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }
+
+            async copyToClipboard(input) {
+                try {
+                    await navigator.clipboard.writeText(input.value);
+                    this.showCopySuccess(input);
+                } catch (err) {
+                    // Fallback for older browsers
+                    input.select();
+                    document.execCommand('copy');
+                    this.showCopySuccess(input);
+                }
+            }
+
+            showCopySuccess(input) {
+                if (input) {
+                    input.classList.add('copied');
+                }
+                this.copyFeedback.classList.add('show');
+                
+                setTimeout(() => {
+                    if (input) {
+                        input.classList.remove('copied');
+                    }
+                    this.copyFeedback.classList.remove('show');
+                }, 1500);
+            }
+
+            async copyAllLinks() {
+                const imageResults = document.querySelectorAll('.image-result');
+                if (imageResults.length === 0) {
+                    this.showWarning('No uploaded files to copy');
+                    return;
+                }
+
+                const format = document.getElementById('copyAllFormat').value;
+                let allLinks = '';
+
+                imageResults.forEach((resultElement, index) => {
+                    // Get all inputs in this image result
+                    const inputs = resultElement.querySelectorAll('.link-input');
+                    let linkToAdd = '';
+                    
+                    // Find input corresponding to selected format
+                    switch (format) {
+                        case 'direct':
+                            linkToAdd = inputs[0]?.value || '';
+                            break;
+                        case 'markdown':
+                            linkToAdd = inputs[1]?.value || '';
+                            break;
+                        case 'bbcode':
+                            linkToAdd = inputs[2]?.value || '';
+                            break;
+                        case 'html':
+                            linkToAdd = inputs[3]?.value || '';
+                            break;
+                    }
+                    
+                    if (linkToAdd) {
+                        allLinks += linkToAdd;
+                        // Add newline between links (except for the last one)
+                        if (index < imageResults.length - 1) {
+                            allLinks += '\n';
+                        }
+                    }
+                });
+
+                if (!allLinks.trim()) {
+                    this.showWarning('No links found to copy');
+                    return;
+                }
+
+                try {
+                    await navigator.clipboard.writeText(allLinks);
+                    this.showCopyFeedback();
+                } catch (err) {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = allLinks;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    
+                    this.showCopyFeedback();
+                }
+            }
+
+            showCopyFeedback() {
+                this.copyFeedback.textContent = 'Copied to clipboard!';
+                this.copyFeedback.classList.add('show');
+                
+                setTimeout(() => {
+                    this.copyFeedback.classList.remove('show');
+                }, 1500);
+            }
+
+            showError(message) {
+                this.errorMessage.querySelector('.message-content').textContent = message;
+                this.errorMessage.classList.add('persistent');
+                this.errorMessage.style.display = 'block';
+            }
+
+            showSuccess(message) {
+                this.successMessage.querySelector('.message-content').textContent = message;
+                this.successMessage.classList.add('persistent');
+                this.successMessage.style.display = 'block';
+            }
+
+            showWarning(message) {
+                this.warningMessage.querySelector('.message-content').textContent = message;
+                this.warningMessage.style.display = 'block';
+                setTimeout(() => {
+                    if (this.warningMessage.style.display === 'block') {
+                        this.warningMessage.style.display = 'none';
+                    }
+                }, 4000);
+            }
+        }
+
+        // Initialize the uploader
+        const uploader = new ImageUploader();
+    </script>
+</body>
+</html>
