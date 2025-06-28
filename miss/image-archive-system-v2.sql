@@ -1,4 +1,4 @@
-CREATE TABLE images_new (
+CREATE TABLE IF NOT EXISTS images (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     folder TEXT,
     filename TEXT,
